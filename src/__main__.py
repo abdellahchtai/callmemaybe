@@ -27,7 +27,8 @@ if __name__ == "__main__":
         model_name1 = "Qwen/Qwen3-0.6B"
         model_name2 = "Qwen/Qwen2.5-1.5B-Instruct"
         model = Manager(model_name1)
-        model.main(prompts, functs_def)
+        data = model.main(prompts, functs_def)
+        model.output_file(data, argv.args.output)
 
     except ValidationError as e:
 
@@ -42,4 +43,4 @@ if __name__ == "__main__":
         print(e)
 
     end = time.perf_counter()
-    print(f"This code take {(end - start) / 60:.2f} second.")
+    print(f"Runtime: {(end - start) / 60:.2f} min.")

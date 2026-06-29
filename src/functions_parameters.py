@@ -43,7 +43,7 @@ class FunctionParam:
 
                 if valid_token == valid_int:
 
-                    if len(respond) > 10 and len(set(respond[-10:])) == 1:
+                    if len(respond) > 40 and len(set(respond[-40:])) == 1:
 
                         respond.append(self.manager.encode(',')[0])
                         self.add_data(curr_data, key, value, respond)
@@ -57,9 +57,8 @@ class FunctionParam:
 
                 respond.append(token)
                 encoded_prompt.append(token)
-                print(self.manager.llm.decode(encoded_prompt))
 
-                if not self.check(token):
+                if not self.check(token, value):
 
                     flag = False
                     self.add_data(curr_data, key, value, respond)
@@ -82,9 +81,13 @@ class FunctionParam:
 
         return interger, bools
 
-    def check(self, token):
+    def check(self, token, value):
 
         last_token = self.manager.llm.decode(token)
+
+        if value.type == 'string':
+            return "\n" not in last_token
+
         return (("\n" not in last_token) and (',' not in last_token))
 
     def clean_answer(self, answer: list[int], typee) -> str:
@@ -98,6 +101,14 @@ class FunctionParam:
 
             elif "\n" in dec_answer:
                 i = dec_answer.index('\n')
+
+            if typee.type == "integer":
+
+                if '.' in dec_answer:
+                    i2 = dec_answer.index('.')
+                    i = i2 if i2 < i else i
+
+                return int(dec_answer[:i])
 
             return float(dec_answer[:i])
 

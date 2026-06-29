@@ -1,20 +1,20 @@
-funct_defs = data/input/functions_definition.json
-input_prompt = data/input/function_calling_tests.json
-output = data/output/output.txt
+functions_definition = data/input/functions_definition.json
+input = data/input/function_calling_tests.json
+output = data/output/function_calls.json
 
 .PHONY: run install debug clean lint
 
 
 run:
-	@uv run -m src --functions_definition $(funct_defs) --input \
-	$(input_prompt) --output $(output)
+	@uv run -m src --functions_definition $(functions_definition) --input \
+	$(input) --output $(output)
 
 install:
 	@uv sync
 
 debug:
 	@uv run -m pdb -m src --functions_definition $(funct_defs) --input \
-	$(input_prompt) --output $(output)
+	$(input) --output $(output)
 
 clean:
 	@rm -rf .mypy_cache src/__pycache__

@@ -29,13 +29,20 @@ class Manager:
         find_param = FunctionParam(self, function_map)
         valid_int, valid_bool = find_param.encoded_valid_token()
 
-        for prompt in prompts:
+        for i, prompt in enumerate(prompts, 1):
 
+            print()
+            print('---' * 70)
+            print(f"Processing prompt {i}/{len(prompts)}: {prompt.prompt}.\n")
+            print(" Step 1: Find function name.")
             fn = find_name.get_fn(prompt.prompt)
+            print("   Function name found successfully.\n")
+            print(" Step 2: Find parameters.")
             data.append(find_param.get_parameters(
                 fn, prompt.prompt, valid_int, valid_bool))
+            print("  Parameters function found successfully.")
 
-        self.output(data)
+        return data
 
     def encode(self, to_encode: str) -> list[int]:
 
@@ -51,9 +58,14 @@ class Manager:
 
         return max(to_check, key=logits.__getitem__)
 
-    def output(self, data: dict):
+    def output_file(self, data: dict, path: str):
 
-        os.makedirs('data/output', exist_ok=True)
+        directory = os.path.dirname(path)
 
-        with open("data/output/output.json", "w") as f:
+        if directory:
+            os.makedirs(directory, exist_ok=True)
+
+        with open(path, "w") as f:
             json.dump(data, f, indent=2)
+
+        print(f"\n\n🎉🎊Congrats, To see the expected output go to {path}.")

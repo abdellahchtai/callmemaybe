@@ -9,6 +9,7 @@ class ParseArgument:
     def __init__(self) -> None:
 
         self.args = ParseArgument.arg_parse()
+        self.set_default()
 
     @staticmethod
     def arg_parse() -> argparse.Namespace:
@@ -22,6 +23,18 @@ class ParseArgument:
         parse.add_argument('--output', help='Path to output file.')
 
         return parse.parse_args()
+
+    def set_default(self):
+
+        if self.args.input is None:
+            self.args.input = '/data/input/function_calling_tests.json'
+
+        if self.args.functions_definition is None:
+            self.args.functions_definiton = ('/data/input/functions_d'
+                                             'efinition.json')
+
+        if self.args.output is None:
+            self.args.output = '/data/output/ffunction_calls.json'
 
 
 class ValidPrompt(BaseModel):
