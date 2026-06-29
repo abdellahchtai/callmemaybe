@@ -24,17 +24,17 @@ class ParseArgument:
 
         return parse.parse_args()
 
-    def set_default(self):
+    def set_default(self) -> None:
 
         if self.args.input is None:
-            self.args.input = '/data/input/function_calling_tests.json'
+            self.args.input = 'data/input/function_calling_tests.json'
 
         if self.args.functions_definition is None:
-            self.args.functions_definiton = ('/data/input/functions_d'
-                                             'efinition.json')
+            self.args.functions_definition = ('data/input/functions_d'
+                                              'efinition.json')
 
         if self.args.output is None:
-            self.args.output = '/data/output/ffunction_calls.json'
+            self.args.output = 'data/output/ffunction_calls.json'
 
 
 class ValidPrompt(BaseModel):
